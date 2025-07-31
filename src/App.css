@@ -1,0 +1,47 @@
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CodeMirror custom styles */
+.CodeMirror {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  border-radius: 8px;
+}
+
+.CodeMirror-scroll {
+  min-height: 500px;
+}
+
+.CodeMirror-gutters {
+  border-right: 1px solid #e2e8f0;
+  background: #f7fafc;
+}
+
+.CodeMirror-linenumber {
+  color: #718096;
+  font-size: 12px;
+}
+
+.CodeMirror-cursor {
+  border-left: 2px solid #3182ce !important;
+}
+
+.CodeMirror-selected {
+  background: rgba(49, 130, 206, 0.1) !important;
+}
+
+.CodeMirror-focused .CodeMirror-selected {
+  background: rgba(49, 130, 206, 0.2) !important;
+}
