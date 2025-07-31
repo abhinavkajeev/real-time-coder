@@ -150,114 +150,135 @@ const RealTimeEditor = () => {
   return (
     <div className="editor-container">
       <style jsx>{`
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body, html {
+          overflow: hidden;
+        }
+
         .editor-container {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 24px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          width: 100vw;
+          height: 100vh;
+          font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+          color: #e2e8f0;
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          top: 0;
+          left: 0;
+          overflow: hidden;
         }
 
-        .header-card {
-          background: #ffffff;
-          border-radius: 16px;
-          padding: 32px;
-          margin-bottom: 24px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header-content {
+        .header-bar {
+          background: rgba(15, 15, 35, 0.95);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(64, 224, 255, 0.2);
+          padding: 12px 24px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 24px;
+          z-index: 100;
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
         }
 
         .header-left {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 20px;
+        }
+
+        .logo-section {
+          display: flex;
+          align-items: center;
+          gap: 12px;
         }
 
         .logo-icon {
-          width: 48px;
-          height: 48px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          border-radius: 12px;
+          width: 36px;
+          height: 36px;
+          background: linear-gradient(135deg, #40e0ff 0%, #00c9ff 50%, #92fe9d 100%);
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
+          color: #0f0f23;
+          box-shadow: 0 4px 16px rgba(64, 224, 255, 0.4);
         }
 
-        .header-info h1 {
-          margin: 0 0 8px 0;
-          font-size: 28px;
+        .app-title {
+          font-size: 20px;
           font-weight: 700;
-          color: #1a202c;
+          background: linear-gradient(135deg, #40e0ff, #92fe9d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           letter-spacing: -0.5px;
         }
 
-        .header-meta {
+        .header-info {
           display: flex;
           align-items: center;
           gap: 24px;
-          flex-wrap: wrap;
         }
 
         .user-info {
           display: flex;
           align-items: center;
           gap: 8px;
-          color: #718096;
+          color: #94a3b8;
           font-size: 14px;
         }
 
         .username {
+          color: #40e0ff;
           font-weight: 600;
-          color: #667eea;
         }
 
-        .room-info {
+        .room-section {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 12px;
         }
 
         .room-id {
-          background: #f7fafc;
+          background: rgba(64, 224, 255, 0.1);
+          border: 1px solid rgba(64, 224, 255, 0.3);
+          color: #40e0ff;
           padding: 6px 12px;
-          border-radius: 8px;
-          font-family: 'Monaco', 'Menlo', monospace;
-          font-size: 13px;
-          color: #2d3748;
-          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          font-family: 'SF Mono', 'Monaco', monospace;
+          font-size: 12px;
+          letter-spacing: 0.5px;
         }
 
         .copy-btn {
-          background: #667eea;
+          background: linear-gradient(135deg, #40e0ff, #00c9ff);
           border: none;
-          color: white;
-          padding: 8px 12px;
-          border-radius: 8px;
+          color: #0f0f23;
+          padding: 6px 12px;
+          border-radius: 6px;
           cursor: pointer;
           display: flex;
           align-items: center;
           gap: 6px;
           font-size: 12px;
-          font-weight: 500;
-          transition: all 0.2s ease;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 8px rgba(64, 224, 255, 0.3);
         }
 
         .copy-btn:hover {
-          background: #5a67d8;
           transform: translateY(-1px);
+          box-shadow: 0 4px 16px rgba(64, 224, 255, 0.4);
         }
 
         .copy-btn.copied {
-          background: #48bb78;
+          background: linear-gradient(135deg, #92fe9d, #00f5a0);
         }
 
         .header-right {
@@ -270,412 +291,433 @@ const RealTimeEditor = () => {
           display: flex;
           align-items: center;
           gap: 8px;
-          background: linear-gradient(135deg, #48bb78, #38a169);
-          color: white;
-          padding: 10px 16px;
-          border-radius: 12px;
-          font-size: 14px;
+          background: rgba(146, 254, 157, 0.15);
+          border: 1px solid rgba(146, 254, 157, 0.3);
+          color: #92fe9d;
+          padding: 8px 16px;
+          border-radius: 8px;
+          font-size: 13px;
           font-weight: 500;
-          box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
         }
 
         .leave-btn {
-          background: #ffffff;
-          border: 2px solid #e53e3e;
-          color: #e53e3e;
-          padding: 10px 20px;
-          border-radius: 12px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 14px;
-          font-weight: 500;
-          transition: all 0.2s ease;
-        }
-
-        .leave-btn:hover {
-          background: #e53e3e;
-          color: white;
-          transform: translateY(-1px);
-        }
-
-        .editor-card {
-          background: #ffffff;
-          border-radius: 16px;
-          overflow: hidden;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          margin-bottom: 24px;
-        }
-
-        .run-controls {
-          background: linear-gradient(90deg, #2d3748, #4a5568);
-          padding: 12px 24px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          border-bottom: 1px solid #37474f;
-        }
-
-        .run-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .run-btn {
-          background: linear-gradient(135deg, #48bb78, #38a169);
-          border: none;
-          color: white;
+          background: rgba(239, 68, 68, 0.15);
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          color: #ef4444;
           padding: 8px 16px;
           border-radius: 8px;
           cursor: pointer;
           display: flex;
           align-items: center;
           gap: 8px;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
-          transition: all 0.2s ease;
+          transition: all 0.3s ease;
         }
 
-        .run-btn:hover:not(:disabled) {
-          background: linear-gradient(135deg, #38a169, #2f855a);
+        .leave-btn:hover {
+          background: rgba(239, 68, 68, 0.25);
           transform: translateY(-1px);
         }
 
+        .main-workspace {
+          flex: 1;
+          display: flex;
+          overflow: hidden;
+        }
+
+        .editor-section {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          background: rgba(15, 15, 35, 0.8);
+          backdrop-filter: blur(10px);
+          border-right: 1px solid rgba(64, 224, 255, 0.1);
+        }
+
+        .editor-header {
+          background: rgba(26, 26, 46, 0.9);
+          padding: 12px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid rgba(64, 224, 255, 0.2);
+        }
+
+        .editor-info {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .file-tabs {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .file-tab {
+          background: rgba(64, 224, 255, 0.1);
+          border: 1px solid rgba(64, 224, 255, 0.2);
+          color: #40e0ff;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .language-badge {
+          background: linear-gradient(135deg, #92fe9d, #00f5a0);
+          color: #0f0f23;
+          padding: 4px 10px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+        }
+
+        .run-controls {
+          background: rgba(26, 26, 46, 0.95);
+          padding: 12px 20px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          border-bottom: 1px solid rgba(64, 224, 255, 0.1);
+        }
+
+        .run-btn {
+          background: linear-gradient(135deg, #92fe9d, #00f5a0);
+          border: none;
+          color: #0f0f23;
+          padding: 8px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 8px rgba(146, 254, 157, 0.3);
+        }
+
+        .run-btn:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 16px rgba(146, 254, 157, 0.4);
+        }
+
         .run-btn:disabled {
-          opacity: 0.6;
+          opacity: 0.5;
           cursor: not-allowed;
         }
 
         .clear-btn {
-          background: #4a5568;
-          border: none;
-          color: #e2e8f0;
+          background: rgba(100, 116, 139, 0.2);
+          border: 1px solid rgba(100, 116, 139, 0.3);
+          color: #94a3b8;
           padding: 8px 12px;
-          border-radius: 8px;
+          border-radius: 6px;
           cursor: pointer;
           display: flex;
           align-items: center;
           gap: 6px;
           font-size: 12px;
           font-weight: 500;
-          transition: all 0.2s ease;
+          transition: all 0.3s ease;
         }
 
         .clear-btn:hover {
-          background: #2d3748;
+          background: rgba(100, 116, 139, 0.3);
+          color: #e2e8f0;
         }
 
-        .language-badge {
-          background: rgba(102, 126, 234, 0.1);
-          color: #667eea;
-          padding: 4px 12px;
-          border-radius: 12px;
-          font-size: 12px;
-          font-weight: 600;
-          border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-
-        .editor-dots {
-          display: flex;
-          gap: 8px;
-        }
-
-        .dot {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-        }
-
-        .dot.red { background: #ef4444; }
-        .dot.yellow { background: #f59e0b; }
-        .editor-header {
-          background: linear-gradient(90deg, #2d3748, #4a5568);
-          padding: 16px 24px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          border-bottom: 1px solid #37474f;
+        .editor-wrapper {
+          flex: 1;
+          position: relative;
+          overflow: hidden;
         }
 
         .output-panel {
-          background: #1a202c;
-          border-top: 1px solid #2d3748;
-          min-height: 200px;
-          max-height: 400px;
-          overflow-y: auto;
+          height: 200px;
+          background: rgba(15, 15, 35, 0.95);
+          border-top: 1px solid rgba(64, 224, 255, 0.2);
+          display: flex;
+          flex-direction: column;
         }
 
         .output-header {
-          background: #2d3748;
-          padding: 12px 24px;
+          background: rgba(26, 26, 46, 0.9);
+          padding: 10px 20px;
           display: flex;
           align-items: center;
-          gap: 12px;
-          border-bottom: 1px solid #4a5568;
+          gap: 8px;
+          border-bottom: 1px solid rgba(64, 224, 255, 0.1);
         }
 
         .output-title {
-          color: #e2e8f0;
-          font-size: 14px;
-          font-weight: 500;
+          color: #40e0ff;
+          font-size: 13px;
+          font-weight: 600;
           display: flex;
           align-items: center;
           gap: 8px;
         }
 
         .output-content {
-          padding: 16px 24px;
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+          flex: 1;
+          padding: 16px 20px;
+          font-family: 'SF Mono', 'Monaco', monospace;
           font-size: 13px;
-          line-height: 1.5;
+          line-height: 1.6;
           color: #e2e8f0;
           white-space: pre-wrap;
           word-wrap: break-word;
+          overflow-y: auto;
+          background: rgba(0, 0, 0, 0.2);
         }
 
         .output-empty {
-          color: #718096;
+          color: #64748b;
           font-style: italic;
         }
 
         .output-error {
-          color: #fc8181;
+          color: #fca5a5;
         }
 
         .output-running {
-          color: #63b3ed;
+          color: #40e0ff;
         }
 
-        .dot.green { background: #10b981; }
-
-        .editor-title {
-          color: #e2e8f0;
-          font-size: 14px;
-          font-weight: 500;
-          margin-left: 12px;
+        .sidebar {
+          width: 280px;
+          background: rgba(15, 15, 35, 0.9);
+          backdrop-filter: blur(15px);
+          display: flex;
+          flex-direction: column;
+          border-left: 1px solid rgba(64, 224, 255, 0.1);
         }
 
-        .editor-wrapper {
-          position: relative;
+        .sidebar-header {
+          padding: 16px 20px;
+          background: rgba(26, 26, 46, 0.8);
+          border-bottom: 1px solid rgba(64, 224, 255, 0.2);
         }
 
-        .users-card {
-          background: #ffffff;
-          border-radius: 16px;
-          padding: 24px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .users-header {
+        .sidebar-title {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 16px;
-        }
-
-        .users-icon {
-          width: 24px;
-          height: 24px;
-          color: #667eea;
-        }
-
-        .users-title {
-          font-size: 18px;
+          gap: 10px;
+          color: #40e0ff;
+          font-size: 14px;
           font-weight: 600;
-          color: #2d3748;
-          margin: 0;
         }
 
         .users-list {
+          padding: 16px;
           display: flex;
-          flex-wrap: wrap;
-          gap: 12px;
+          flex-direction: column;
+          gap: 8px;
         }
 
         .user-badge {
-          background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-          color: #4a5568;
-          padding: 8px 16px;
-          border-radius: 12px;
-          font-size: 14px;
+          background: rgba(64, 224, 255, 0.1);
+          border: 1px solid rgba(64, 224, 255, 0.2);
+          color: #40e0ff;
+          padding: 10px 14px;
+          border-radius: 8px;
+          font-size: 13px;
           font-weight: 500;
-          border: 1px solid #e2e8f0;
-          transition: all 0.2s ease;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
 
         .user-badge.current {
-          background: linear-gradient(135deg, #667eea, #764ba2);
-          color: white;
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+          background: linear-gradient(135deg, rgba(146, 254, 157, 0.2), rgba(0, 245, 160, 0.1));
+          border-color: rgba(146, 254, 157, 0.4);
+          color: #92fe9d;
+          box-shadow: 0 2px 8px rgba(146, 254, 157, 0.2);
         }
 
         .user-badge:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+          transform: translateY(-1px);
+          background: rgba(64, 224, 255, 0.15);
         }
 
         /* CodeMirror Customizations */
         .editor-wrapper :global(.CodeMirror) {
-          height: 500px !important;
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+          height: 100% !important;
+          font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace !important;
           font-size: 14px !important;
           line-height: 1.6 !important;
+          background: rgba(15, 15, 35, 0.4) !important;
         }
 
         .editor-wrapper :global(.CodeMirror-scroll) {
-          border-radius: 0 !important;
+          background: transparent !important;
         }
 
         .editor-wrapper :global(.CodeMirror-gutters) {
-          background: #263238 !important;
-          border-right: 1px solid #37474f !important;
+          background: rgba(26, 26, 46, 0.6) !important;
+          border-right: 1px solid rgba(64, 224, 255, 0.2) !important;
         }
 
         .editor-wrapper :global(.CodeMirror-linenumber) {
-          color: #546e7a !important;
+          color: #64748b !important;
+        }
+
+        .editor-wrapper :global(.CodeMirror-cursor) {
+          border-left: 2px solid #40e0ff !important;
+        }
+
+        .editor-wrapper :global(.CodeMirror-selected) {
+          background: rgba(64, 224, 255, 0.2) !important;
         }
 
         @media (max-width: 768px) {
-          .editor-container {
-            padding: 16px;
+          .header-bar {
+            padding: 8px 16px;
           }
 
-          .header-content {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 20px;
+          .header-info {
+            gap: 16px;
           }
 
-          .header-meta {
+          .room-section {
             flex-direction: column;
             align-items: flex-start;
-            gap: 12px;
-          }
-
-          .header-right {
-            justify-content: space-between;
-          }
-
-          .users-list {
             gap: 8px;
+          }
+
+          .sidebar {
+            display: none;
+          }
+
+          .output-panel {
+            height: 150px;
           }
         }
       `}</style>
 
-      {/* Header */}
-      <div className="header-card">
-        <div className="header-content">
-          <div className="header-left">
+      {/* Header Bar */}
+      <div className="header-bar">
+        <div className="header-left">
+          <div className="logo-section">
             <div className="logo-icon">
-              <Code2 size={24} />
+              <Code2 size={20} />
             </div>
-            <div className="header-info">
-              <h1>CodeSync Studio</h1>
-              <div className="header-meta">
-                <div className="user-info">
-                  <Wifi size={16} />
-                  Welcome, <span className="username">{username}</span>
-                </div>
-                <div className="room-info">
-                  <span>Room:</span>
-                  <code className="room-id">{roomId}</code>
-                  <button 
-                    className={`copy-btn ${copied ? 'copied' : ''}`}
-                    onClick={copyRoomId}
-                  >
-                    <Copy size={14} />
-                    {copied ? 'Copied!' : 'Copy'}
-                  </button>
-                </div>
-              </div>
+            <div className="app-title">CodeSync Pro</div>
+          </div>
+          <div className="header-info">
+            <div className="user-info">
+              <Wifi size={14} />
+              <span className="username">{username}</span>
+            </div>
+            <div className="room-section">
+              <code className="room-id">{roomId}</code>
+              <button 
+                className={`copy-btn ${copied ? 'copied' : ''}`}
+                onClick={copyRoomId}
+              >
+                <Copy size={12} />
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
             </div>
           </div>
-          <div className="header-right">
-            <div className="status-badge">
-              <Users size={16} />
-              {users.length} {users.length === 1 ? 'user' : 'users'} online
-            </div>
-            <button className="leave-btn" onClick={handleLeaveRoom}>
-              <LogOut size={16} />
-              Leave Room
-            </button>
+        </div>
+        <div className="header-right">
+          <div className="status-badge">
+            <Users size={14} />
+            {users.length} {users.length === 1 ? 'user' : 'users'} online
           </div>
+          <button className="leave-btn" onClick={handleLeaveRoom}>
+            <LogOut size={14} />
+            Leave Room
+          </button>
         </div>
       </div>
 
-      {/* Code Editor */}
-      <div className="editor-card">
-        <div className="editor-header">
-          <div className="editor-dots">
-            <div className="dot red"></div>
-            <div className="dot yellow"></div>
-            <div className="dot green"></div>
+      {/* Main Workspace */}
+      <div className="main-workspace">
+        {/* Editor Section */}
+        <div className="editor-section">
+          <div className="editor-header">
+            <div className="editor-info">
+              <div className="file-tabs">
+                <div className="file-tab">
+                  <Terminal size={12} />
+                  main.py
+                </div>
+              </div>
+              <div className="language-badge">Python 3.x</div>
+            </div>
           </div>
-          <div className="editor-title">
-            main.py - Python Collaborative Environment
-          </div>
-          <div className="language-badge">Python 3.x</div>
-        </div>
-        <div className="run-controls">
-          <div className="run-left">
+
+          <div className="run-controls">
             <button 
               className="run-btn" 
               onClick={runPythonCode}
               disabled={isRunning}
             >
-              {isRunning ? <Square size={16} /> : <Play size={16} />}
-              {isRunning ? 'Running...' : 'Run Code'}
+              {isRunning ? <Square size={14} /> : <Play size={14} />}
+              {isRunning ? 'Running...' : 'Execute'}
             </button>
             <button className="clear-btn" onClick={clearOutput}>
               Clear Output
             </button>
           </div>
-        </div>
-        <div className="editor-wrapper">
-          <textarea id="ds" style={{ display: 'none' }} />
-        </div>
-        <div className="output-panel">
-          <div className="output-header">
-            <div className="output-title">
-              <Terminal size={16} />
-              Output
+
+          <div className="editor-wrapper">
+            <textarea id="ds" style={{ display: 'none' }} />
+          </div>
+
+          <div className="output-panel">
+            <div className="output-header">
+              <div className="output-title">
+                <Terminal size={14} />
+                Console Output
+              </div>
+            </div>
+            <div className="output-content">
+              {!output ? (
+                <div className="output-empty">Ready to execute Python code...</div>
+              ) : (
+                <div className={`${output.includes('Error:') ? 'output-error' : ''} ${output === 'Running...' ? 'output-running' : ''}`}>
+                  {output}
+                </div>
+              )}
             </div>
           </div>
-          <div className="output-content">
-            {!output ? (
-              <div className="output-empty">No output yet. Run your Python code to see results here.</div>
-            ) : (
-              <div className={`${output.includes('Error:') ? 'output-error' : ''} ${output === 'Running...' ? 'output-running' : ''}`}>
-                {output}
-              </div>
-            )}
-          </div>
         </div>
-      </div>
 
-      {/* Connected Users */}
-      {users.length > 0 && (
-        <div className="users-card">
-          <div className="users-header">
-            <Users className="users-icon" />
-            <h3 className="users-title">Active Collaborators</h3>
-          </div>
-          <div className="users-list">
-            {users.map((user, index) => (
-              <div
-                key={index}
-                className={`user-badge ${user === username ? 'current' : ''}`}
-              >
-                {user} {user === username && "(You)"}
+        {/* Sidebar */}
+        {users.length > 0 && (
+          <div className="sidebar">
+            <div className="sidebar-header">
+              <div className="sidebar-title">
+                <Users size={16} />
+                Active Collaborators
               </div>
-            ))}
+            </div>
+            <div className="users-list">
+              {users.map((user, index) => (
+                <div
+                  key={index}
+                  className={`user-badge ${user === username ? 'current' : ''}`}
+                >
+                  <span>{user}</span>
+                  {user === username && <span>(You)</span>}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

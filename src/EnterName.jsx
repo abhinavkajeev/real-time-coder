@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Users, Plus, Code2, Globe, Check, AlertCircle } from 'lucide-react'
+import { Users, Plus, Code2, Globe, Check, AlertCircle, ArrowLeft } from 'lucide-react'
 import { useMutation } from 'react-query'
 import { useStore } from './store'
 import axios from 'axios'
 
-const EnterName = () => {
+const EnterName = ({ onBackToLanding }) => {
   const inputRef = useRef()
   const joinNameRef = useRef()
   const roomIdRef = useRef()
@@ -168,13 +168,80 @@ const EnterName = () => {
   }
 
   return (
-    <>
+    <div style={{
+      minHeight: '100vh',
+      width: '100vw',
+      background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%)',
+      margin: 0,
+      padding: 0,
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      overflow: 'auto'
+    }}>
+      <style jsx global>{`
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        html, body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow-x: hidden;
+        }
+        
+        body {
+          background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%) !important;
+        }
+      `}</style>
       <style jsx>{`
         .container {
           max-width: 480px;
-          margin: 80px auto;
-          padding: 0 20px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+          margin: 0 auto;
+          padding: 80px 20px 40px 20px;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          position: relative;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        body {
+          background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+          min-height: 100vh;
+        }
+
+        .back-button {
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          background: rgba(15, 15, 35, 0.9);
+          border: 1px solid rgba(64, 224, 255, 0.3);
+          color: #40e0ff;
+          padding: 8px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          backdrop-filter: blur(10px);
+          z-index: 100;
+        }
+
+        .back-button:hover {
+          background: rgba(15, 15, 35, 1);
+          border-color: #40e0ff;
+          transform: translateX(-2px);
+          box-shadow: 0 4px 12px rgba(64, 224, 255, 0.2);
         }
 
         .header {
@@ -185,9 +252,9 @@ const EnterName = () => {
         .title {
           font-size: 2.5rem;
           font-weight: 700;
-          color: #1a202c;
+          color: #e2e8f0;
           margin: 0 0 12px 0;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #40e0ff 0%, #92fe9d 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -195,7 +262,7 @@ const EnterName = () => {
 
         .subtitle {
           font-size: 1.1rem;
-          color: #718096;
+          color: #94a3b8;
           margin: 0;
           display: flex;
           align-items: center;
@@ -204,12 +271,12 @@ const EnterName = () => {
         }
 
         .card {
-          background: white;
+          background: rgba(15, 15, 35, 0.8);
           border-radius: 16px;
           padding: 40px;
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-          border: 1px solid #e2e8f0;
-          backdrop-filter: blur(10px);
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(64, 224, 255, 0.2);
+          backdrop-filter: blur(20px);
         }
 
         .section {
@@ -223,7 +290,7 @@ const EnterName = () => {
         .section-title {
           font-size: 1rem;
           font-weight: 600;
-          color: #4a5568;
+          color: #e2e8f0;
           margin: 0 0 16px 0;
           display: flex;
           align-items: center;
@@ -239,29 +306,29 @@ const EnterName = () => {
           width: 100%;
           padding: 16px 20px;
           font-size: 1rem;
-          border: 2px solid #e2e8f0;
-          color: #000000;
+          border: 2px solid rgba(64, 224, 255, 0.3);
+          color: #e2e8f0;
           border-radius: 12px;
-          background: #fafafa;
+          background: rgba(26, 26, 46, 0.8);
           transition: all 0.2s ease;
           outline: none;
           box-sizing: border-box;
         }
 
         .input::placeholder {
-          color: #a0aec0;
+          color: #94a3b8;
           opacity: 1;
         }
 
         .input:hover {
-          border-color: #cbd5e0;
-          background: white;
+          border-color: rgba(64, 224, 255, 0.5);
+          background: rgba(26, 26, 46, 0.9);
         }
 
         .input:focus {
-          border-color: #4299e1;
-          background: white;
-          box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+          border-color: #40e0ff;
+          background: rgba(26, 26, 46, 1);
+          box-shadow: 0 0 0 3px rgba(64, 224, 255, 0.1);
         }
 
         .input-with-button {
@@ -274,8 +341,8 @@ const EnterName = () => {
           top: 50%;
           transform: translateY(-50%);
           padding: 8px 16px;
-          background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
-          color: white;
+          background: linear-gradient(135deg, #40e0ff 0%, #00c9ff 100%);
+          color: #0f0f23;
           border: none;
           border-radius: 8px;
           font-size: 0.875rem;
@@ -294,13 +361,23 @@ const EnterName = () => {
           cursor: not-allowed;
         }
 
+        .input-button:hover:not(:disabled) {
+          background: linear-gradient(135deg, #00c9ff 0%, #40e0ff 100%);
+          box-shadow: 0 4px 12px rgba(64, 224, 255, 0.3);
+        }
+
         .input-button.green {
-          background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+          background: linear-gradient(135deg, #92fe9d 0%, #00f5a0 100%);
+        }
+
+        .input-button.green:hover:not(:disabled) {
+          background: linear-gradient(135deg, #00f5a0 0%, #92fe9d 100%);
+          box-shadow: 0 4px 12px rgba(146, 254, 157, 0.3);
         }
 
         .divider {
           height: 1px;
-          background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+          background: linear-gradient(90deg, transparent, rgba(64, 224, 255, 0.3), transparent);
           margin: 32px 0;
           position: relative;
         }
@@ -311,11 +388,11 @@ const EnterName = () => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          background: white;
+          background: rgba(15, 15, 35, 0.8);
           padding: 0 16px;
           font-size: 0.75rem;
           font-weight: 600;
-          color: #a0aec0;
+          color: #94a3b8;
           letter-spacing: 1px;
         }
 
@@ -336,23 +413,25 @@ const EnterName = () => {
         }
 
         .toast {
-          background: white;
+          background: rgba(15, 15, 35, 0.95);
           border-radius: 12px;
           padding: 16px 20px;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
           border-left: 4px solid;
           max-width: 400px;
           display: flex;
           align-items: flex-start;
           gap: 12px;
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(64, 224, 255, 0.2);
         }
 
         .toast.success {
-          border-left-color: #48bb78;
+          border-left-color: #92fe9d;
         }
 
         .toast.error {
-          border-left-color: #f56565;
+          border-left-color: #ef4444;
         }
 
         .toast-content {
@@ -361,13 +440,13 @@ const EnterName = () => {
 
         .toast-title {
           font-weight: 600;
-          color: #1a202c;
+          color: #e2e8f0;
           margin: 0 0 4px 0;
           font-size: 0.875rem;
         }
 
         .toast-description {
-          color: #718096;
+          color: #94a3b8;
           font-size: 0.8rem;
           margin: 0;
         }
@@ -379,8 +458,8 @@ const EnterName = () => {
         .loading-spinner {
           width: 16px;
           height: 16px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          border-top: 2px solid white;
+          border: 2px solid rgba(15, 15, 35, 0.3);
+          border-top: 2px solid #0f0f23;
           border-radius: 50%;
           animation: spin 1s linear infinite;
         }
@@ -392,8 +471,7 @@ const EnterName = () => {
 
         @media (max-width: 600px) {
           .container {
-            margin: 40px auto;
-            padding: 0 16px;
+            padding: 60px 16px 40px 16px;
           }
 
           .title {
@@ -412,8 +490,27 @@ const EnterName = () => {
           .toast {
             max-width: none;
           }
+
+          .back-button {
+            top: 16px;
+            left: 16px;
+          }
         }
       `}</style>
+
+      {onBackToLanding && (
+        <motion.button 
+          className="back-button" 
+          onClick={onBackToLanding}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+          whileHover={{ x: -2 }}
+        >
+          <ArrowLeft size={16} />
+          Back to Landing
+        </motion.button>
+      )}
 
       <motion.div 
         className="container"
@@ -592,7 +689,7 @@ const EnterName = () => {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", delay: 0.2 }}
                   >
-                    <Check size={18} color="#48bb78" />
+                    <Check size={18} color="#92fe9d" />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -614,7 +711,7 @@ const EnterName = () => {
           ))}
         </AnimatePresence>
       </div>
-    </>
+    </div>
   )
 }
 
